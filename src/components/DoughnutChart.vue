@@ -44,6 +44,9 @@
         let lstOuiNon = [];
         //table nb de villageois par spécialité
         let lstNb = [];
+
+        let loading = ref()
+        loading.value = false
         //Au montage du composant
         onMounted(async() => {
              let request = "https://accidentvelo.jmfino.fr/json.php"
@@ -54,6 +57,7 @@
             .then(response => {
                 liste.value = response
             console.log("liste", liste)
+            loading.value = true
                 })
                 .catch(error => console.log('erreur Ajax', error))
 
@@ -139,7 +143,7 @@
 
 <template>
 
-    <div class="container">
+    <div v-if="loading" class="container">
         <!--
             chart-otpions : Options du graphique
             chart-data : données du graphique
@@ -162,6 +166,9 @@
             :witdh="width"
             :height="height"
         />
+    </div>
+    <div v-else>
+        <img src="../assets/loading-16.gif" class="img-fluid"/>
     </div>
 
 </template>
