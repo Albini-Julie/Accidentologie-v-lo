@@ -129,6 +129,9 @@ let liste = ref(null);
     //Liste des oui non
     //table nb de villageois par spécialité
     let lstNb = [];
+
+    let loading = ref()
+    loading.value = false
     //Au montage du composant
     onMounted(async() => {
             let request = "https://accidentvelo.jmfino.fr/json.php"
@@ -139,6 +142,7 @@ let liste = ref(null);
         .then(response => {
             liste.value = response
         console.log("liste", liste)
+        loading.value = true
             })
             .catch(error => console.log('erreur Ajax', error))
 
@@ -234,7 +238,7 @@ let liste = ref(null);
 </script>
 
 <template>
-  <div>
+  <div v-if="loading">
     <Bar
       :chart-options="chartOptions"
       :chart-data="chartData"
@@ -247,6 +251,9 @@ let liste = ref(null);
       :height="height"
     />
   </div>
+  <div v-else>
+        <img src="../assets/loading-16.gif" class="img-fluid"/>
+    </div>
 </template>
 
 <script scoped>
