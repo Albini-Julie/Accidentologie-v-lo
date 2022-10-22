@@ -127,6 +127,8 @@
         let liste = ref()
         let total = ref()
         total.value = 0
+        let loading = ref()
+        loading.value = false
 
         onMounted(async() => {
             let request = "https://accidentvelo.jmfino.fr/json.php"
@@ -138,6 +140,7 @@
                 liste.value = response
         console.log("liste", liste)
         console.log("nb lignes", liste.value.length)
+        loading.value = true
                 byYear()
                 })
                 .catch(error => console.log('erreur Ajax', error))
@@ -202,7 +205,7 @@
 </script>
 
 <template>
-    <div class="container">
+    <div v-if="loading" class="container">
         <Line
             :chart-options="chartOptions"
             :chart-data="chartData"
@@ -214,5 +217,8 @@
             :witdh="width"
             :height="height"
         />
+    </div>
+    <div v-else>
+        <img src="../assets/loading-16.gif" class=" img-fluid"/>
     </div>
 </template>
