@@ -32,8 +32,8 @@ ChartJS.register(
 const propChart = defineProps({
   chartId: { type: String, default: "bar-chart" }, //id du graphique
   datasetIdKey: { type: String, default: "label" }, //id du dataSet
-  width: { type: Number, default: "300" }, //largeur du graphique
-  height: { type: Number, default: "300" }, //Hauteur du graphique
+  width: { type: Number, default: 200}, //largeur du graphique
+  height: { type: Number, default: 70 }, //Hauteur du graphique
   cssClasses: { type: String, default: "" }, //Classes ccs utilisées
   styles: { type: Object, default: () => {} }, //styles ccs utilisée
   plugins: { type: Object, default: () => {} }, //plugins utilisés
@@ -116,22 +116,10 @@ let chartOptions = reactive({
     legend: {
       //label des données
       labels: {
-        color: "blue",
+        color: "black",
         font: {
           size: 16,
         },
-      },
-    },
-    title: {
-      //Affichage du titre
-      display: true,
-      //Libellé du graphique
-      text: "Chartjs - Barchart",
-      //Couleur du texte
-      color: "blue",
-      //Police du texte
-      font: {
-        size: 16,
       },
     },
   },
