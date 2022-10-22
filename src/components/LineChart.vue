@@ -17,8 +17,8 @@
     const propChart = defineProps({
         chartId: {type: String,     default: 'line-chart'}, //Id du graphique
         datasetIdKey: {type: String, default: 'label'}, //id du dataSet
-        width: {type: Number, default: 75},//Hauteur du graphe
-        height: {type: Number, default: 150}, //Largeur du graphe
+        width: {type: Number, default: 50},//Hauteur du graphe
+        height: {type: Number, default: 175}, //Largeur du graphe
         cssClasses: {type:String, default:''},//Classes css utilisées
         styles: {type: Object, default: () => {}}, //Styles utilisés
         plugins: {type: Object, default: () => {}}, //plugins utilisés

@@ -17,8 +17,8 @@
     const propChart = defineProps({
         chartId: {type: String, default: 'doughnut-chart'}, //Id graphique
         datasetIdkey: {type: String, default: 'label'}, //id du dataSet
-        width: {type: Number, default: 500}, //largeur du graphique
-        height: {type: Number, default: 500}, //hauteur du grpahique
+        width: {type: Number, default: 100}, //largeur du graphique
+        height: {type: Number, default: 100}, //hauteur du grpahique
         cssClasses: {type: String, default: ''}, //Classe css utilisées
         styles : {type: Object, default: () => {}} //plugins utilisés
     })
