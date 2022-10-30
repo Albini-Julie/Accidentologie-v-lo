@@ -46,6 +46,7 @@ let chartData = reactive({
   //Valeurs des données du graphique
   datasets: [
     {
+      label: "Accidents à vélo",
       //Valeurs des données
       data: [],
       // Couleur des barres en regard des valeurs
@@ -149,15 +150,14 @@ let liste = ref(null);
             let setRoutes = new Set()
             let firstLine = true;
             liste.value.forEach( (el) => {
-                if(!firstLine){
-                    let dt = el[11] 
-                    setRoutes.add(dt[0]) //Ajout année au set
+                if(!firstLine){ 
+                    setRoutes.add(el[11]) //Ajout année au set
                 }
                 firstLine = false
             })
             //Chargement des labels
             chartData.labels = Array.from(setRoutes)
-            chartData.labels.sort() //Tri des années
+            
             
 
 
@@ -175,6 +175,9 @@ let liste = ref(null);
             let nbRoutesDep = 0
             let nbRoutesNat = 0
             let nbAutre = 0
+            let nbParc = 0
+            let nbHorsRes = 0
+            let nbNull = 0
             let nbAutoroute = 0
             
             //Parcours des specialités 
@@ -186,11 +189,16 @@ let liste = ref(null);
                     //Si c'est la bonne spécialité
                     //on compte +1
                     if(!firstLine){
+                      if(ch == val[11]){
                         if(val[11] == 'Voie Communale') {nbVoiesCom++}
                         if (val[11] == 'Routes Départementales') {nbRoutesDep++}
                         if (val[11] == 'Routes Nationales') {nbRoutesNat++}
                         if (val[11] == 'Autre') {nbAutre++}
+                        if (val[11] == 'Parc de stationnement ouvert à la circulation publique') {nbParc++}
+                        if (val[11] == 'Hors réseau public') {nbHorsRes++}
+                        if (val[11] == 'Null') {nbNull++}
                         if (val[11] == 'Autoroute') {nbAutoroute++}
+                    }
                     }
                 
                 })
@@ -202,6 +210,9 @@ let liste = ref(null);
             cptRoutes.push(nbRoutesDep);
             cptRoutes.push(nbRoutesNat);
             cptRoutes.push(nbAutre);
+            cptRoutes.push(nbParc);
+            cptRoutes.push(nbHorsRes);
+            cptRoutes.push(nbNull);
             cptRoutes.push(nbAutoroute);
 
             //on transfert le tableau de comptage dans les data
@@ -209,7 +220,7 @@ let liste = ref(null);
             console.log("chartdata, " , chartData.datasets[0])
 
             //Calcul des couleurs et bordures
-            let bgColor=[];
+                let bgColor=[];
                 let bdColor = [];
                 //Pour chaque valeur existante
                 cptRoutes.forEach( function(val){
