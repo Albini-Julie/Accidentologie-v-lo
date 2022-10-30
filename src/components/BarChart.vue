@@ -76,7 +76,7 @@ let chartData = reactive({
 //Voir documentation
 let chartOptions = reactive({
   //Aspect responsive du graphique
-  reponsive: true,
+  responsive: true,
   //Maintien du ratio
   maintainAspectRation: false,
 
@@ -150,7 +150,7 @@ let liste = ref(null);
             let firstLine = true;
             liste.value.forEach( (el) => {
                 if(!firstLine){
-                    let dt = el[11] //Recupération de l'année à partir de la date
+                    let dt = el[11] 
                     setRoutes.add(dt[0]) //Ajout année au set
                 }
                 firstLine = false
