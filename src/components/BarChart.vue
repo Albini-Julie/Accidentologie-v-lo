@@ -44,6 +44,7 @@ let chartData = reactive({
   //Etiquette de l'axe
   labels: [],
   //Valeurs des données du graphique
+  
   datasets: [
     {
       label: "Accidents à vélo",
@@ -70,7 +71,7 @@ let chartData = reactive({
       borderWidth: 1,
     },
   ],
-});
+})
 
 //Options du graphique
 //Les principales utilisées, il en existe d'autres
@@ -142,82 +143,50 @@ let liste = ref(null);
         //Récupération de la réponse
         .then(response => {
             liste.value = response
-        console.log("liste", liste)
-        loading.value = true
-            })
-            .catch(error => console.log('erreur Ajax', error))
+            //console.log("liste", liste)
+            loading.value = true
 
             let setRoutes = new Set()
-            let firstLine = true;
+            let firstLine = true
             liste.value.forEach( (el) => {
                 if(!firstLine){ 
-                    setRoutes.add(el[11]) //Ajout année au set
+                    setRoutes.add(el[11]) //Ajout type route au set
                 }
                 firstLine = false
             })
             //Chargement des labels
             chartData.labels = Array.from(setRoutes)
-            
-            
 
-
-            
-            //Recupération des valeurs de set dans un tableau
-            //chartData.labels = Array.from(setOuiNon);
-            //Tri du tableau par ordre alphabétique
-            // chartData.labels.sort();
-            console.log("tri libellé : ", chartData.labels)
-
-            let cptRoutes = []
-            
-            firstLine = true;
-            let nbVoiesCom = 0
-            let nbRoutesDep = 0
-            let nbRoutesNat = 0
-            let nbAutre = 0
-            let nbParc = 0
-            let nbHorsRes = 0
-            let nbNull = 0
-            let nbAutoroute = 0
-            
-            //Parcours des specialités 
-            chartData.labels.forEach(function(ch){
-                //Initialisation du nombre pour le spécialité en cours
-                
-                //Parcours de la liste des villageois
-                liste.value.forEach( (val) => {
-                    //Si c'est la bonne spécialité
-                    //on compte +1
-                    if(!firstLine){
-                      if(ch == val[11]){
-                        if(val[11] == 'Voie Communale') {nbVoiesCom++}
-                        if (val[11] == 'Routes Départementales') {nbRoutesDep++}
-                        if (val[11] == 'Routes Nationales') {nbRoutesNat++}
-                        if (val[11] == 'Autre') {nbAutre++}
-                        if (val[11] == 'Parc de stationnement ouvert à la circulation publique') {nbParc++}
-                        if (val[11] == 'Hors réseau public') {nbHorsRes++}
-                        if (val[11] == 'Null') {nbNull++}
-                        if (val[11] == 'Autoroute') {nbAutoroute++}
+            // Comptage nb accidents par type de voie
+            // On créé un tableau de la taille de celui des labels
+            // Avec toutes les cellulles à zero (fill)
+            let cptRoutes = new Array(chartData.labels.length).fill(0)
+            // Compteur pour comptage
+            let i=0
+            chartData.labels.forEach( (label) =>{
+              firstLine = true
+              liste.value.forEach( (val) => {
+                  if(!firstLine){                    
+                    if(val[11] == label){
+                      cptRoutes[i]++
                     }
-                    }
-                
-                })
-                //on place le nb de villageois de cette spécialité dans le tableau de comptage
-                
-                firstLine = false //Mise ç faux de la 1° ligne
+                }
+                firstLine = false
+              })
+              i++
             })
-            cptRoutes.push(nbVoiesCom);
-            cptRoutes.push(nbRoutesDep);
-            cptRoutes.push(nbRoutesNat);
-            cptRoutes.push(nbAutre);
-            cptRoutes.push(nbParc);
-            cptRoutes.push(nbHorsRes);
-            cptRoutes.push(nbNull);
-            cptRoutes.push(nbAutoroute);
 
-            //on transfert le tableau de comptage dans les data
-            chartData.datasets[0].data = cptRoutes;
-            console.log("chartdata, " , chartData.datasets[0])
+            // Comptage total pour vérif.
+            let totalAcc = 0
+            cptRoutes.forEach( (route)=>{
+              totalAcc += route
+            })
+            // Mise à jour labal avec nb accidents
+            chartData.datasets[0].label += " ("+totalAcc+" accidents)" 
+
+            firstLine = true
+            chartData.datasets[0].data = cptRoutes
+
 
             //Calcul des couleurs et bordures
                 let bgColor=[];
@@ -236,13 +205,10 @@ let liste = ref(null);
                 //Chargement des couleurs et des bordures
                 chartData.datasets[0].backgroundColor = bgColor;
                 chartData.datasets[0].borderColor = bdColor;
-                //chartData.datasets[1].backgroundColor = bgColor;
-                //chartData.datasets[1].borderColor = bdColor;
-        
-
-    //Fonction de calcul aléatoire des couleurs
-    
+            })
+            .catch(error => console.log('erreur Ajax', error))
     })
+
     const couleur = (min, max) => {
         return Math.floor(Math.random() * (max - min));
     }
